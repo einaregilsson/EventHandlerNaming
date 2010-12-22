@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <Extern href="stdidcmd.h"/>
+  <Extern href="vsshlids.h"/>
+  <Extern href="msobtnid.h"/>
+
+  <Commands package="packageID">
+    <Groups>
+      <Group guid="commandSetID" id="MyMenuGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS"/>
+      </Group>
+    </Groups>
+    <Buttons>
+      <Button guid="commandSetID" id="cmdEventHandlerNaming" priority="0x0100" type="Button">
+        <Parent guid="commandSetID" id="MyMenuGroup" />
+        <Strings>
+          <CommandName>cmdEventHandlerNaming</CommandName>
+          <ButtonText>Event Handler Naming</ButtonText>
+        </Strings>
+      </Button>
+    </Buttons>
+  </Commands>
+
+  <Symbols>
+    <!-- This is the package guid. -->
+    <GuidSymbol name="packageID" value="{2bdc9c28-e8c4-44cd-974b-19fded0abbe4}" />
+    <!-- This is the guid used to group the menu commands together -->
+    <GuidSymbol name="commandSetID" value="{a1bea695-5c2a-4a47-a7c5-6430a32e702c}">
+      <IDSymbol name="MyMenuGroup" value="0x1020" />
+      <IDSymbol name="cmdEventHandlerNaming" value="0x0100" />
+    </GuidSymbol>
+  </Symbols>
+</CommandTable>
