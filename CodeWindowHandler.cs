@@ -43,54 +43,60 @@ namespace EinarEgilsson.EventHandlerNaming
         {
             _application = application;
             _textDocKeyPressEvents = ((Events2)application.Events).get_TextDocumentKeyPressEvents(null);
-            _textDocKeyPressEvents.AfterKeyPress += OnAfterTextDocumentKeyPress;
-            _textDocKeyPressEvents.BeforeKeyPress += new _dispTextDocumentKeyPressEvents_BeforeKeyPressEventHandler(OnBeforeTextDocumentKeyPress);
+            _textDocKeyPressEvents.AfterKeyPress += AfterTextDocumentKeyPress;
+            _textDocKeyPressEvents.BeforeKeyPress += BeforeTextDocumentKeyPress;
             _nameProvider = nameProvider;
         }
 
-        //temp variables
+        //Variables that hold state between beforekeypress and afterkeypress
         private bool _isRenameCandidate;
         private bool _isExpandingCandidate;
         private string _eventName;
         private EditPoint _delegateStart;
+        private bool _openedUndoContext;
 
-        private bool KeyPressIsNotCandidate(string keypress)
+        void BeforeTextDocumentKeyPress(string keypress, TextSelection selection, bool inStatementCompletion, ref bool cancelKeypress)
         {
-            return keypress != "\t" || _application.ActiveDocument.Language != "CSharp";
-        }
-
-        void OnBeforeTextDocumentKeyPress(string keypress, TextSelection selection, bool inStatementCompletion, ref bool cancelKeypress)
-        {
-            if (KeyPressIsNotCandidate(keypress))
+            if (keypress != "\t" || _application.ActiveDocument.Language != "CSharp")
             {
                 return;
             }
-            if (HandleCreateDeletgateTemplate(selection))
+            if (HandleCreateDelegateTemplate(selection))
             {
                 return;
             }
 
-            HandleExpandDeletgateTemplate(selection);
+            HandleExpandDelegateTemplate(selection);
 
         }
 
-        private bool HandleCreateDeletgateTemplate(TextSelection selection)
+        private void StartUndoOperation()
+        {
+            if (!_application.UndoContext.IsOpen)
+            {
+                _application.UndoContext.Open("EventHandlerNaming", false);
+                _openedUndoContext = true;
+            }
+        }
+
+        private bool HandleCreateDelegateTemplate(TextSelection selection)
         {
             var editPoint = selection.TopPoint.CreateEditPoint();
             editPoint.StartOfLine();
             string previousLine = editPoint.GetText(selection.TopPoint);
 
-            Match creatingEventHandler = Regex.Match(previousLine, @"\.(\w+)\s*\+=\s*$");
-            _isRenameCandidate = creatingEventHandler.Success;
-            if (creatingEventHandler.Success)
+            Match matchCreatingEventHandler = Regex.Match(previousLine, @"\.(\w+)\s*\+=\s*$");
+            _isRenameCandidate = matchCreatingEventHandler.Success;
+            if (_isRenameCandidate)
             {
-                _eventName = creatingEventHandler.Groups[1].Value;
+                _eventName = matchCreatingEventHandler.Groups[1].Value;
+                StartUndoOperation();
                 return true;
             }
             return false;
         }
 
-        private void HandleExpandDeletgateTemplate(TextSelection selection)
+        private void HandleExpandDelegateTemplate(TextSelection selection)
         {
             if (!Options.Instance.UseDelegateInference)
             {
@@ -100,32 +106,45 @@ namespace EinarEgilsson.EventHandlerNaming
             editPoint.StartOfLine();
             string previousLine = editPoint.GetText(selection.TopPoint);
 
-            Match expandingEventHandler = Regex.Match(previousLine, @"\.\w+\s*\+=\s*new\s+[a-zA-Z0-9_\.]+\s*\(\w*$");
-            _isExpandingCandidate = expandingEventHandler.Success;
+            Match matchExpandingEventHandler = Regex.Match(previousLine, @"\.\w+\s*\+=\s*new\s+[a-zA-Z0-9_\.]+\s*\((\w*)$");
+            _isExpandingCandidate = matchExpandingEventHandler.Success;
             if (_isExpandingCandidate)
             {
+                StartUndoOperation();
                 _delegateStart = selection.TopPoint.CreateEditPoint();
+                _delegateStart.CharLeft(matchExpandingEventHandler.Groups[1].Value.Length); //We are now right after the (
             }
         }
 
-        private void OnAfterTextDocumentKeyPress(string keypress, TextSelection selection, bool inStatementCompletion)
+        private void AfterTextDocumentKeyPress(string keypress, TextSelection selection, bool inStatementCompletion)
         {
             if (!_isRenameCandidate && !_isExpandingCandidate)
             {
                 return;
             }
 
-            if (_isRenameCandidate)
+            try
             {
-                DoRename(selection);
+                if (_isRenameCandidate)
+                {
+                    DoRename(selection);
+                }
+                if (_isExpandingCandidate)
+                {
+                    DoExpand(selection);
+                }
+                if (_openedUndoContext)
+                {
+                    _application.UndoContext.Close();
+                }
+
             }
-            if (_isExpandingCandidate)
+            finally
             {
-                DoExpand(selection);
+                _isRenameCandidate = false;
+                _isExpandingCandidate = false;
+                _openedUndoContext = false;
             }
-            _isRenameCandidate = false;
-            _isExpandingCandidate = false;
-            
         }
 
         private void DoRename(TextSelection selection)
@@ -139,21 +158,10 @@ namespace EinarEgilsson.EventHandlerNaming
             int lastPost = original.LastIndexOf('_');
             string siteName = original.Substring(0, lastPost);
             string eventName = original.Substring(lastPost + 1);
-            var classElement = _application.ActiveDocument.ProjectItem.FileCodeModel.CodeElementFromPoint((TextPoint)selection.ActivePoint, vsCMElement.vsCMElementClass);
+            var classElement = selection.ActivePoint.get_CodeElement(vsCMElement.vsCMElementClass);
             string name = _nameProvider.CreateEventHandlerName(siteName, eventName, classElement.Name, selection.Text);
 
-            bool wasOpen = _application.UndoContext.IsOpen;
-            if (!wasOpen)
-            {
-                _application.UndoContext.Open("EventHandlerNaming.InsertEventHandler", false);
-            }
-
             selection.TopPoint.CreateEditPoint().ReplaceText(selection.BottomPoint, name, 0);
-
-            if (!wasOpen)
-            {
-                _application.UndoContext.Close();
-            }
         }
 
         private void DoExpand(TextSelection selection)
@@ -170,21 +178,13 @@ namespace EinarEgilsson.EventHandlerNaming
             {
                 var delPoint = _delegateStart.CreateEditPoint();
                 string prevChar = delPoint.GetText(-1);
-                if (prevChar == "(")
-                {
-                    delPoint.WordLeft(2);
-                }
-                else
-                {
-                    delPoint.WordLeft(3);
-                }
+                delPoint.WordLeft(3);
                 
                 delPoint.Delete(_delegateStart);
                 _delegateStart.WordRight(1);
                 _delegateStart.Delete(1);
             }
             _delegateStart = null;
-
         }
 
     }
