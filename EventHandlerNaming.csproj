@@ -139,12 +139,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="EinarEgilssonStrongName.snk" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Key.snk" />
   </ItemGroup>
   <ItemGroup>
     <VSCTCompile Include="EventHandlerNaming.vsct">
