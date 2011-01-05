@@ -121,7 +121,11 @@
     <value>EventHandler Naming</value>
   </data>
   <data name="112" xml:space="preserve">
-    <value>Creates better default names for event handling methods.</value>
+    <value>EventHandler Naming
+
+Creates better default names for event handling methods.
+
+http://tech.einaregilsson.com/2010/12/22/better-eventhandler-names-in-visual-studio-2010/</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="400" type="System.Resources.ResXFileRef, System.Windows.Forms">

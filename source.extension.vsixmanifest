@@ -3,14 +3,14 @@
   <Identifier Id="2bdc9c28-e8c4-44cd-974b-19fded0abbe4">
     <Name>EventHandler Naming</Name>
     <Author>Einar Egilsson</Author>
-    <Version>1.0</Version>
+    <Version>1.0.1</Version>
     <Description xml:space="preserve">Creates better default names for event handling methods in the WinForms designer, WebForms designer and Code editor. Specify names with simple patterns. Optionally simplify event handler setup by using delegate inference.</Description>
     <Locale>1033</Locale>
     <MoreInfoUrl>http://tech.einaregilsson.com/2010/12/22/better-eventhandler-names-in-visual-studio-2010/</MoreInfoUrl>
-    <License>license.txt</License>
+    <License>Resources\license.txt</License>
     <GettingStartedGuide>http://tech.einaregilsson.com/2010/12/22/better-eventhandler-names-in-visual-studio-2010/</GettingStartedGuide>
-    <Icon>icon.png</Icon>
-    <PreviewImage>preview.png</PreviewImage>
+    <Icon>Resources\icon.png</Icon>
+    <PreviewImage>Resources\preview.png</PreviewImage>
     <InstalledByMsi>false</InstalledByMsi>
     <SupportedProducts>
       <VisualStudio Version="10.0">

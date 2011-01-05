@@ -37,7 +37,7 @@ using System.Collections.Generic;
 namespace EinarEgilsson.EventHandlerNaming
 {
     [PackageRegistration(UseManagedResourcesOnly = true)]
-    [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
+    [InstalledProductRegistration("#110", "#112", "1.0.1", IconResourceID = 400)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideAutoLoad(UIContextGuids80.SolutionExists)]
     [Guid("2bdc9c28-e8c4-44cd-974b-19fded0abbe4")]
@@ -67,7 +67,7 @@ namespace EinarEgilsson.EventHandlerNaming
 
         private void MenuItemCallback(object sender, EventArgs e)
         {
-            var result = new OptionsForm().ShowDialog();
+            new OptionsForm().ShowDialog();
         }
     }
 }

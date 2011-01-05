@@ -141,10 +141,10 @@
             this.lnkHelp.AutoSize = true;
             this.lnkHelp.Location = new System.Drawing.Point(81, 157);
             this.lnkHelp.Name = "lnkHelp";
-            this.lnkHelp.Size = new System.Drawing.Size(133, 13);
+            this.lnkHelp.Size = new System.Drawing.Size(121, 13);
             this.lnkHelp.TabIndex = 13;
             this.lnkHelp.TabStop = true;
-            this.lnkHelp.Text = "Help, how do I use this???";
+            this.lnkHelp.Text = "Help, how do I use this?";
             this.lnkHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkHelp_LinkClicked);
             // 
             // OptionsForm
