@@ -1,0 +1,5 @@
+bin/
+obj/
+_ReSharper.EventHandlerNaming/
+EventHandlerNaming.suo
+*.user
