@@ -27,13 +27,15 @@ namespace EinarEgilsson.EventHandlerNaming
 {
     internal class DesignerCreationListener
     {
-        internal DesignerCreationListener(IDesignerEventService designerEvents) {
+        internal DesignerCreationListener(IDesignerEventService designerEvents, Options options) {
             designerEvents.DesignerCreated += (s, e) => e.Designer.LoadComplete += OnDesignerLoaded;
+            _options = options;
         }
 
+        private Options _options;
         private void OnDesignerLoaded(object sender, EventArgs e)
         {
-            IDesignerHost host = sender as IDesignerHost;
+            var host = sender as IDesignerHost;
             if (host == null)
             {
                 return;
@@ -41,14 +43,14 @@ namespace EinarEgilsson.EventHandlerNaming
             host.LoadComplete -= OnDesignerLoaded;
 
             Type type = typeof(IEventBindingService);
-            IEventBindingService originalService = (IEventBindingService) host.GetService(type);
+            var originalService = (IEventBindingService) host.GetService(type);
             if (originalService == null)
             {
                 return;
             }
 
             host.RemoveService(type);
-            host.AddService(type, new DesignerEventBindingService(originalService, new PatternNameProvider()));
+            host.AddService(type, new DesignerEventBindingService(originalService, new PatternNameProvider(_options)));
         }
     }
 }

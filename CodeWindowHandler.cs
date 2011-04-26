@@ -20,16 +20,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 $Id$ 
 */
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using EnvDTE80;
 using EnvDTE;
-using Microsoft.VisualStudio.TextManager.Interop;
-using Microsoft.VisualStudio.Shell.Interop;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 
 namespace EinarEgilsson.EventHandlerNaming
 {
@@ -37,15 +30,17 @@ namespace EinarEgilsson.EventHandlerNaming
     {
         private readonly TextDocumentKeyPressEvents _textDocKeyPressEvents;
         private readonly DTE2 _application;
-        private readonly IEventHandlerNameProvider _nameProvider;
-
-        internal CodeWindowHandler(DTE2 application, IEventHandlerNameProvider nameProvider)
+        private readonly PatternNameProvider _nameProvider;
+        private readonly Options _options;
+        
+        internal CodeWindowHandler(DTE2 application, PatternNameProvider nameProvider, Options options)
         {
             _application = application;
-            _textDocKeyPressEvents = ((Events2)application.Events).get_TextDocumentKeyPressEvents(null);
+            _textDocKeyPressEvents = ((Events2)application.Events).TextDocumentKeyPressEvents[null];
             _textDocKeyPressEvents.AfterKeyPress += AfterTextDocumentKeyPress;
             _textDocKeyPressEvents.BeforeKeyPress += BeforeTextDocumentKeyPress;
             _nameProvider = nameProvider;
+            _options = options;
         }
 
         //Variables that hold state between beforekeypress and afterkeypress
@@ -74,7 +69,7 @@ namespace EinarEgilsson.EventHandlerNaming
         {
             if (!_application.UndoContext.IsOpen)
             {
-                _application.UndoContext.Open("EventHandlerNaming", false);
+                _application.UndoContext.Open("EventHandlerNaming");
                 _openedUndoContext = true;
             }
         }
@@ -98,7 +93,7 @@ namespace EinarEgilsson.EventHandlerNaming
 
         private void HandleExpandDelegateTemplate(TextSelection selection)
         {
-            if (!Options.Instance.UseDelegateInference)
+            if (!_options.UseDelegateInference)
             {
                 return;
             }
@@ -158,7 +153,7 @@ namespace EinarEgilsson.EventHandlerNaming
             int lastPost = original.LastIndexOf('_');
             string siteName = original.Substring(0, lastPost);
             string eventName = original.Substring(lastPost + 1);
-            var classElement = selection.ActivePoint.get_CodeElement(vsCMElement.vsCMElementClass);
+            var classElement = selection.ActivePoint.CodeElement[vsCMElement.vsCMElementClass];
             string name = _nameProvider.CreateEventHandlerName(siteName, eventName, classElement.Name, selection.Text);
 
             selection.TopPoint.CreateEditPoint().ReplaceText(selection.BottomPoint, name, 0);
@@ -177,11 +172,11 @@ namespace EinarEgilsson.EventHandlerNaming
             if (line.Trim() == "throw new NotImplementedException();")
             {
                 var delPoint = _delegateStart.CreateEditPoint();
-                string prevChar = delPoint.GetText(-1);
+                delPoint.GetText(-1);
                 delPoint.WordLeft(3);
                 
                 delPoint.Delete(_delegateStart);
-                _delegateStart.WordRight(1);
+                _delegateStart.WordRight();
                 _delegateStart.Delete(1);
             }
             _delegateStart = null;

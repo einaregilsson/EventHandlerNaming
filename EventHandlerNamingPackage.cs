@@ -21,23 +21,16 @@ $Id$
 */
 #endregion
 using System;
-using System.Diagnostics;
-using System.Globalization;
 using System.Runtime.InteropServices;
 using System.ComponentModel.Design;
-using Microsoft.Win32;
-using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using EnvDTE80;
-using System.ComponentModel.Composition;
-using System.Collections.Generic;
 
 namespace EinarEgilsson.EventHandlerNaming
 {
     [PackageRegistration(UseManagedResourcesOnly = true)]
-    [InstalledProductRegistration("#110", "#112", "1.0.1", IconResourceID = 400)]
+    [InstalledProductRegistration("#110", "#112", "1.2.0", IconResourceID = 400)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideAutoLoad(UIContextGuids80.SolutionExists)]
     [Guid("2bdc9c28-e8c4-44cd-974b-19fded0abbe4")]
@@ -45,12 +38,15 @@ namespace EinarEgilsson.EventHandlerNaming
     {
         private CodeWindowHandler _codeWindowHandler;
         private DesignerCreationListener _designerHandler;
+        private Options _options;
 
         protected override void Initialize()
         {
             base.Initialize();
-            _designerHandler = new DesignerCreationListener((IDesignerEventService)GetService(typeof(IDesignerEventService)));
-            _codeWindowHandler = new CodeWindowHandler((DTE2) GetGlobalService(typeof(EnvDTE.DTE)), new PatternNameProvider());
+            _options = new Options(UserRegistryRoot,  "EventHandlerNaming");
+            _options.Load();
+            _designerHandler = new DesignerCreationListener((IDesignerEventService)GetService(typeof(IDesignerEventService)), _options);
+            _codeWindowHandler = new CodeWindowHandler((DTE2) GetGlobalService(typeof(EnvDTE.DTE)), new PatternNameProvider(_options), _options);
             InitializeMenuCommands();
         }
 
@@ -67,7 +63,7 @@ namespace EinarEgilsson.EventHandlerNaming
 
         private void MenuItemCallback(object sender, EventArgs e)
         {
-            new OptionsForm().ShowDialog();
+            new OptionsForm(_options).ShowDialog();
         }
     }
 }

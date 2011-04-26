@@ -21,78 +21,66 @@ $Id$
 */
 #endregion
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Xml;
-using System.Reflection;
-using System.Xml.Serialization;
+using Microsoft.Win32;
 
 namespace EinarEgilsson.EventHandlerNaming
 {
-
-    public enum Transform
-    {
-        NoChange = 0,
-        Lowercase = 1,
-        Uppercase = 2,
-        CamelCase = 3,
-        PascalCase = 4
-    }
-
     public class Options
     {
-        public Options()
+        private const string DefaultPrefixes = "txt;lbl;btn;cbo;grp;chk;prg;rdo;grd;lst;edt";
+        
+        public Options(RegistryKey registryRoot, string extensionName)
         {
             Pattern = "On$(SiteName)$(EventName)";
             OmitSiteNameForOwnEvents = true;
             SiteNameTransform = Transform.PascalCase;
+            EventNameTransform = Transform.NoChange;
             UseDelegateInference = true;
+            RemovePrefixes = DefaultPrefixes;
+            _registryRoot = registryRoot;
+            _extensionName = extensionName;
         }
+
+        private readonly RegistryKey _registryRoot;
+        private readonly string _extensionName;
 
         public string Pattern { get; set; }
         public Transform SiteNameTransform { get; set; }
         public Transform EventNameTransform { get; set; }
-        public Transform ClassNameTransform { get; set; }
         public bool OmitSiteNameForOwnEvents { get; set; }
         public bool UseDelegateInference { get; set; }
+        public string RemovePrefixes { get; set; }
+        
+        public void Load()
+        {
+            RegistryKey extensionKey = _registryRoot.OpenSubKey(_extensionName);
+            if (extensionKey == null)
+            {
+                return;
+            }
+            Pattern = (string) extensionKey.GetValue("Pattern", Pattern);
+            SiteNameTransform = (int)extensionKey.GetValue("SiteNameTransform", SiteNameTransform);
+            EventNameTransform = (int)extensionKey.GetValue("EventNameTransform", EventNameTransform);
+            OmitSiteNameForOwnEvents = ((int) extensionKey.GetValue("OmitSiteNameForOwnEvents", OmitSiteNameForOwnEvents)) == 1 ? true : false;
+            UseDelegateInference = ((int)extensionKey.GetValue("UseDelegateInference", UseDelegateInference)) == 1 ? true : false;
+            RemovePrefixes = (string) extensionKey.GetValue("RemovePrefixes", RemovePrefixes);
+        }
 
         public void Save()
         {
-            XmlSerializer serializer = new XmlSerializer (typeof (Options));
-            using (var writer = new StreamWriter(_filename, false, Encoding.UTF8)){
-                serializer.Serialize(writer, this);
-            }
-        }
-
-        private static readonly string _filename = Path.ChangeExtension(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath, "xml");
-
-        private static Options _instance;
-        public static Options Instance
-        {
-            get
+            RegistryKey extensionKey = _registryRoot.OpenSubKey(_extensionName, true) ??
+                                       _registryRoot.CreateSubKey(_extensionName);
+            if (extensionKey == null)
             {
-                if (_instance == null)
-                {
-                    if (File.Exists(_filename)){
-                        try {
-
-                            XmlSerializer serializer = new XmlSerializer ( typeof (Options ));
-                        
-                            using (var reader = new StreamReader(_filename, Encoding.UTF8, false)){
-                                _instance = (Options)serializer.Deserialize(reader);
-                            }
-                        } catch (Exception){
-                            _instance = new Options(); //Never fail.
-                        }
-                    }
-                    else {
-                        _instance = new Options();
-                    }
-                }
-                return _instance;
+                throw new Exception("Could not create registry key for options!");
             }
+
+            extensionKey.SetValue("Pattern", Pattern, RegistryValueKind.String);
+            extensionKey.SetValue("SiteNameTransform", SiteNameTransform.Value, RegistryValueKind.DWord);
+            extensionKey.SetValue("EventNameTransform", EventNameTransform.Value, RegistryValueKind.DWord);
+            extensionKey.SetValue("OmitSiteNameForOwnEvents", OmitSiteNameForOwnEvents ? 1:0, RegistryValueKind.DWord);
+            extensionKey.SetValue("UseDelegateInference", UseDelegateInference ? 1 : 0, RegistryValueKind.DWord);
+            extensionKey.SetValue("RemovePrefixes", RemovePrefixes, RegistryValueKind.String);
         }
     }
 }

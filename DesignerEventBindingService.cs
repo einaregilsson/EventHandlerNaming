@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 $Id$ 
 */
 #endregion
-using System;
+
 using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.Design;
@@ -30,9 +30,9 @@ namespace EinarEgilsson.EventHandlerNaming
     internal class DesignerEventBindingService : IEventBindingService
     {
         private readonly IEventBindingService _realService;
-        private readonly IEventHandlerNameProvider _nameProvider;
+        private readonly PatternNameProvider _nameProvider;
 
-        public DesignerEventBindingService(IEventBindingService realService, IEventHandlerNameProvider nameProvider)
+        public DesignerEventBindingService(IEventBindingService realService, PatternNameProvider nameProvider)
         {
             _realService = realService;
             _nameProvider = nameProvider;

@@ -11,7 +11,8 @@
     <RootNamespace>EinarEgilsson.EventHandlerNaming</RootNamespace>
     <AssemblyName>EventHandlerNaming</AssemblyName>
     <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFile>EinarEgilssonStrongName.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -124,10 +125,10 @@
       <DependentUpon>OptionsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="PatternNameProvider.cs" />
-    <Compile Include="IEventHandlerNameProvider.cs" />
     <Compile Include="EventHandlerNamingPackage.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Transform.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="OptionsForm.resx">
@@ -139,7 +140,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="EinarEgilssonStrongName.snk" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>

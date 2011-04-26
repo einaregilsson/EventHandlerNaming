@@ -39,12 +39,14 @@
             this.chkOmitSiteNameForOwnEvents = new System.Windows.Forms.CheckBox();
             this.chkUseDelegateInference = new System.Windows.Forms.CheckBox();
             this.lnkHelp = new System.Windows.Forms.LinkLabel();
+            this.txtRemovePrefixes = new System.Windows.Forms.TextBox();
+            this.lblRemovePrefixes = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblPattern
             // 
             this.lblPattern.AutoSize = true;
-            this.lblPattern.Location = new System.Drawing.Point(34, 27);
+            this.lblPattern.Location = new System.Drawing.Point(58, 27);
             this.lblPattern.Name = "lblPattern";
             this.lblPattern.Size = new System.Drawing.Size(44, 13);
             this.lblPattern.TabIndex = 0;
@@ -53,7 +55,7 @@
             // lblSiteName
             // 
             this.lblSiteName.AutoSize = true;
-            this.lblSiteName.Location = new System.Drawing.Point(22, 53);
+            this.lblSiteName.Location = new System.Drawing.Point(46, 53);
             this.lblSiteName.Name = "lblSiteName";
             this.lblSiteName.Size = new System.Drawing.Size(56, 13);
             this.lblSiteName.TabIndex = 2;
@@ -61,32 +63,38 @@
             // 
             // cboSiteNameTransform
             // 
+            this.cboSiteNameTransform.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cboSiteNameTransform.FormattingEnabled = true;
-            this.cboSiteNameTransform.Location = new System.Drawing.Point(84, 50);
+            this.cboSiteNameTransform.Location = new System.Drawing.Point(108, 50);
             this.cboSiteNameTransform.Name = "cboSiteNameTransform";
-            this.cboSiteNameTransform.Size = new System.Drawing.Size(192, 21);
+            this.cboSiteNameTransform.Size = new System.Drawing.Size(293, 21);
             this.cboSiteNameTransform.TabIndex = 5;
             // 
             // txtPattern
             // 
-            this.txtPattern.Location = new System.Drawing.Point(84, 24);
+            this.txtPattern.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtPattern.Location = new System.Drawing.Point(108, 24);
             this.txtPattern.Name = "txtPattern";
-            this.txtPattern.Size = new System.Drawing.Size(192, 20);
+            this.txtPattern.Size = new System.Drawing.Size(293, 20);
             this.txtPattern.TabIndex = 6;
             this.txtPattern.Text = "On$(SiteName)$(EventName)";
             // 
             // cboEventNameTransform
             // 
+            this.cboEventNameTransform.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cboEventNameTransform.FormattingEnabled = true;
-            this.cboEventNameTransform.Location = new System.Drawing.Point(84, 77);
+            this.cboEventNameTransform.Location = new System.Drawing.Point(108, 77);
             this.cboEventNameTransform.Name = "cboEventNameTransform";
-            this.cboEventNameTransform.Size = new System.Drawing.Size(192, 21);
+            this.cboEventNameTransform.Size = new System.Drawing.Size(293, 21);
             this.cboEventNameTransform.TabIndex = 8;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 80);
+            this.label1.Location = new System.Drawing.Point(36, 80);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(66, 13);
             this.label1.TabIndex = 7;
@@ -95,19 +103,19 @@
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOK.Location = new System.Drawing.Point(125, 186);
+            this.btnOK.Location = new System.Drawing.Point(256, 215);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 9;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
+            this.btnOK.Click += new System.EventHandler(this.OnOKClick);
             // 
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(206, 186);
+            this.btnCancel.Location = new System.Drawing.Point(337, 215);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 10;
@@ -119,7 +127,7 @@
             this.chkOmitSiteNameForOwnEvents.AutoSize = true;
             this.chkOmitSiteNameForOwnEvents.Checked = true;
             this.chkOmitSiteNameForOwnEvents.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkOmitSiteNameForOwnEvents.Location = new System.Drawing.Point(84, 113);
+            this.chkOmitSiteNameForOwnEvents.Location = new System.Drawing.Point(108, 141);
             this.chkOmitSiteNameForOwnEvents.Name = "chkOmitSiteNameForOwnEvents";
             this.chkOmitSiteNameForOwnEvents.Size = new System.Drawing.Size(181, 17);
             this.chkOmitSiteNameForOwnEvents.TabIndex = 11;
@@ -129,7 +137,7 @@
             // chkUseDelegateInference
             // 
             this.chkUseDelegateInference.AutoSize = true;
-            this.chkUseDelegateInference.Location = new System.Drawing.Point(84, 137);
+            this.chkUseDelegateInference.Location = new System.Drawing.Point(108, 165);
             this.chkUseDelegateInference.Name = "chkUseDelegateInference";
             this.chkUseDelegateInference.Size = new System.Drawing.Size(136, 17);
             this.chkUseDelegateInference.TabIndex = 12;
@@ -139,13 +147,32 @@
             // lnkHelp
             // 
             this.lnkHelp.AutoSize = true;
-            this.lnkHelp.Location = new System.Drawing.Point(81, 157);
+            this.lnkHelp.Location = new System.Drawing.Point(105, 185);
             this.lnkHelp.Name = "lnkHelp";
             this.lnkHelp.Size = new System.Drawing.Size(121, 13);
             this.lnkHelp.TabIndex = 13;
             this.lnkHelp.TabStop = true;
             this.lnkHelp.Text = "Help, how do I use this?";
-            this.lnkHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkHelp_LinkClicked);
+            this.lnkHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.OnLinkClicked);
+            // 
+            // txtRemovePrefixes
+            // 
+            this.txtRemovePrefixes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtRemovePrefixes.Location = new System.Drawing.Point(108, 104);
+            this.txtRemovePrefixes.Name = "txtRemovePrefixes";
+            this.txtRemovePrefixes.Size = new System.Drawing.Size(293, 20);
+            this.txtRemovePrefixes.TabIndex = 14;
+            this.txtRemovePrefixes.Text = "txt;lbl;btn;cbo;grp;chk;prg;rdo;grd;lst;edt";
+            // 
+            // lblRemovePrefixes
+            // 
+            this.lblRemovePrefixes.AutoSize = true;
+            this.lblRemovePrefixes.Location = new System.Drawing.Point(13, 107);
+            this.lblRemovePrefixes.Name = "lblRemovePrefixes";
+            this.lblRemovePrefixes.Size = new System.Drawing.Size(89, 13);
+            this.lblRemovePrefixes.TabIndex = 15;
+            this.lblRemovePrefixes.Text = "Remove prefixes:";
             // 
             // OptionsForm
             // 
@@ -153,8 +180,10 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(293, 221);
+            this.ClientSize = new System.Drawing.Size(424, 250);
             this.ControlBox = false;
+            this.Controls.Add(this.lblRemovePrefixes);
+            this.Controls.Add(this.txtRemovePrefixes);
             this.Controls.Add(this.lnkHelp);
             this.Controls.Add(this.chkUseDelegateInference);
             this.Controls.Add(this.chkOmitSiteNameForOwnEvents);
@@ -187,5 +216,7 @@
         private System.Windows.Forms.CheckBox chkOmitSiteNameForOwnEvents;
         private System.Windows.Forms.CheckBox chkUseDelegateInference;
         private System.Windows.Forms.LinkLabel lnkHelp;
+        private System.Windows.Forms.TextBox txtRemovePrefixes;
+        private System.Windows.Forms.Label lblRemovePrefixes;
     }
 }

@@ -20,24 +20,31 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 $Id$ 
 */
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ComponentModel;
 using System.Text.RegularExpressions;
 
 namespace EinarEgilsson.EventHandlerNaming
 {
-    internal class PatternNameProvider : IEventHandlerNameProvider
+    internal class PatternNameProvider
     {
+        private readonly Options _options;
+        internal PatternNameProvider(Options options)
+        {
+            _options = options;
+        }
+
         public string CreateEventHandlerName(string siteName, string eventName, string containingClassName, string suggestedName)
         {
-            string name = Options.Instance.Pattern;
-            siteName = TransformString(siteName, Options.Instance.SiteNameTransform);
-            eventName = TransformString(eventName, Options.Instance.EventNameTransform);
+            string name = _options.Pattern;
+            if (!string.IsNullOrEmpty(_options.RemovePrefixes))
+            {
+                string removePrefix = "^(" + string.Join("|", _options.RemovePrefixes.Split(';')) + ")";
+                siteName = Regex.Replace(siteName, removePrefix, "");
+            }
 
-            if (Options.Instance.OmitSiteNameForOwnEvents && siteName == containingClassName)
+            siteName = _options.SiteNameTransform.Execute(siteName);
+            eventName = _options.EventNameTransform.Execute(eventName);
+
+            if (_options.OmitSiteNameForOwnEvents && siteName == containingClassName)
             {
                 name = Regex.Replace(name, @"\$\(sitename\)", "", RegexOptions.IgnoreCase);
             }
@@ -45,27 +52,7 @@ namespace EinarEgilsson.EventHandlerNaming
             name = Regex.Replace(name, @"\$\(sitename\)", siteName, RegexOptions.IgnoreCase);
             name = Regex.Replace(name, @"\$\(eventname\)", eventName, RegexOptions.IgnoreCase);
             name = Regex.Replace(name, @"\$\(classname\)", containingClassName?? "", RegexOptions.IgnoreCase);
-            return name;
-        }
-
-        private string TransformString(string s, Transform transform)
-        {
-            s = Regex.Replace(s, "^_*", ""); //Cut off leading underscores
-            switch (transform)
-            {
-                case Transform.NoChange:
-                    return s;
-                case Transform.Lowercase:
-                    return s.ToLower();
-                case Transform.Uppercase:
-                    return s.ToUpper();
-                case Transform.CamelCase:
-                    return Char.ToLower(s[0]) + s.Substring(1);
-                case Transform.PascalCase:
-                    return Char.ToUpper(s[0]) + s.Substring(1);
-                default:
-                    throw new ArgumentException("Unrecognized Transform: " + transform);
-            }
+            return name; 
         }
     }
 }

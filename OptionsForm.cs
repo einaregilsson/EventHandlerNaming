@@ -21,12 +21,7 @@ $Id$
 */
 #endregion
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
 
@@ -34,30 +29,36 @@ namespace EinarEgilsson.EventHandlerNaming
 {
     public partial class OptionsForm : Form
     {
-        public OptionsForm()
+        public OptionsForm(Options options)
         {
             InitializeComponent();
-            cboSiteNameTransform.DataSource = Enum.GetValues(typeof(Transform));
-            cboEventNameTransform.DataSource = Enum.GetValues(typeof(Transform));
-            txtPattern.Text = Options.Instance.Pattern;
-            chkOmitSiteNameForOwnEvents.Checked = Options.Instance.OmitSiteNameForOwnEvents;
-            cboEventNameTransform.SelectedItem = Options.Instance.EventNameTransform;
-            cboSiteNameTransform.SelectedItem = Options.Instance.SiteNameTransform;
-            chkUseDelegateInference.Checked = Options.Instance.UseDelegateInference;
+            _options = options;
+            cboSiteNameTransform.DataSource = Transform.Values.ToList();
+            cboEventNameTransform.DataSource = Transform.Values.ToList();
+            txtPattern.Text = _options.Pattern;
+            chkOmitSiteNameForOwnEvents.Checked = _options.OmitSiteNameForOwnEvents;
+            cboEventNameTransform.SelectedItem = _options.EventNameTransform;
+            cboSiteNameTransform.SelectedItem = _options.SiteNameTransform;
+            chkUseDelegateInference.Checked = _options.UseDelegateInference;
+            txtRemovePrefixes.Text = _options.RemovePrefixes;
         }
 
-        private void btnOK_Click(object sender, EventArgs e)
+        private readonly Options _options;
+
+        private void OnOKClick(object sender, EventArgs e)
         {
-            Options.Instance.Pattern = txtPattern.Text;
-            Options.Instance.OmitSiteNameForOwnEvents = chkOmitSiteNameForOwnEvents.Checked;
-            Options.Instance.EventNameTransform = (Transform)cboEventNameTransform.SelectedItem;
-            Options.Instance.SiteNameTransform= (Transform)cboSiteNameTransform.SelectedItem;
-            Options.Instance.UseDelegateInference = chkUseDelegateInference.Checked;
-            Options.Instance.Save();
+            _options.Pattern = txtPattern.Text;
+            _options.OmitSiteNameForOwnEvents = chkOmitSiteNameForOwnEvents.Checked;
+            _options.EventNameTransform = (Transform)cboEventNameTransform.SelectedItem;
+            _options.SiteNameTransform = (Transform)cboSiteNameTransform.SelectedItem;
+            _options.UseDelegateInference = chkUseDelegateInference.Checked;
+            _options.RemovePrefixes = txtRemovePrefixes.Text;
+            _options.Save();
+            DialogResult = DialogResult.OK;
             Close();
         }
 
-        private void lnkHelp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void OnLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("http://tech.einaregilsson.com/2010/12/22/better-eventhandler-names-in-visual-studio-2010/");
         }
