@@ -2,7 +2,7 @@
 /* 
 EventHandler Naming Visual Studio Extension
 Copyright (C) 2010 Einar Egilsson
-http://tech.einaregilsson.com/2010/12/22/better-eventhandler-names-in-visual-studio-2010/
+http://einaregilsson.com/better-eventhandler-names-in-visual-studio-2010/
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -60,7 +60,7 @@ namespace EinarEgilsson.EventHandlerNaming
 
         private void OnLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("http://tech.einaregilsson.com/2010/12/22/better-eventhandler-names-in-visual-studio-2010/");
+            Process.Start("http://einaregilsson.com/better-eventhandler-names-in-visual-studio-2010/");
         }
 
     }

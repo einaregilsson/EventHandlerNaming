@@ -69,7 +69,7 @@
             this.cboSiteNameTransform.Location = new System.Drawing.Point(108, 50);
             this.cboSiteNameTransform.Name = "cboSiteNameTransform";
             this.cboSiteNameTransform.Size = new System.Drawing.Size(293, 21);
-            this.cboSiteNameTransform.TabIndex = 5;
+            this.cboSiteNameTransform.TabIndex = 3;
             // 
             // txtPattern
             // 
@@ -78,7 +78,7 @@
             this.txtPattern.Location = new System.Drawing.Point(108, 24);
             this.txtPattern.Name = "txtPattern";
             this.txtPattern.Size = new System.Drawing.Size(293, 20);
-            this.txtPattern.TabIndex = 6;
+            this.txtPattern.TabIndex = 1;
             this.txtPattern.Text = "On$(SiteName)$(EventName)";
             // 
             // cboEventNameTransform
@@ -89,7 +89,7 @@
             this.cboEventNameTransform.Location = new System.Drawing.Point(108, 77);
             this.cboEventNameTransform.Name = "cboEventNameTransform";
             this.cboEventNameTransform.Size = new System.Drawing.Size(293, 21);
-            this.cboEventNameTransform.TabIndex = 8;
+            this.cboEventNameTransform.TabIndex = 5;
             // 
             // label1
             // 
@@ -97,7 +97,7 @@
             this.label1.Location = new System.Drawing.Point(36, 80);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(66, 13);
-            this.label1.TabIndex = 7;
+            this.label1.TabIndex = 4;
             this.label1.Text = "EventName:";
             // 
             // btnOK
@@ -106,7 +106,7 @@
             this.btnOK.Location = new System.Drawing.Point(256, 215);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 9;
+            this.btnOK.TabIndex = 11;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.OnOKClick);
@@ -118,7 +118,7 @@
             this.btnCancel.Location = new System.Drawing.Point(337, 215);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 10;
+            this.btnCancel.TabIndex = 12;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
@@ -130,7 +130,7 @@
             this.chkOmitSiteNameForOwnEvents.Location = new System.Drawing.Point(108, 141);
             this.chkOmitSiteNameForOwnEvents.Name = "chkOmitSiteNameForOwnEvents";
             this.chkOmitSiteNameForOwnEvents.Size = new System.Drawing.Size(181, 17);
-            this.chkOmitSiteNameForOwnEvents.TabIndex = 11;
+            this.chkOmitSiteNameForOwnEvents.TabIndex = 8;
             this.chkOmitSiteNameForOwnEvents.Text = "Omit $(SiteName) for own events";
             this.chkOmitSiteNameForOwnEvents.UseVisualStyleBackColor = true;
             // 
@@ -140,7 +140,7 @@
             this.chkUseDelegateInference.Location = new System.Drawing.Point(108, 165);
             this.chkUseDelegateInference.Name = "chkUseDelegateInference";
             this.chkUseDelegateInference.Size = new System.Drawing.Size(136, 17);
-            this.chkUseDelegateInference.TabIndex = 12;
+            this.chkUseDelegateInference.TabIndex = 9;
             this.chkUseDelegateInference.Text = "Use delegate inference";
             this.chkUseDelegateInference.UseVisualStyleBackColor = true;
             // 
@@ -150,7 +150,7 @@
             this.lnkHelp.Location = new System.Drawing.Point(105, 185);
             this.lnkHelp.Name = "lnkHelp";
             this.lnkHelp.Size = new System.Drawing.Size(121, 13);
-            this.lnkHelp.TabIndex = 13;
+            this.lnkHelp.TabIndex = 10;
             this.lnkHelp.TabStop = true;
             this.lnkHelp.Text = "Help, how do I use this?";
             this.lnkHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.OnLinkClicked);
@@ -162,7 +162,7 @@
             this.txtRemovePrefixes.Location = new System.Drawing.Point(108, 104);
             this.txtRemovePrefixes.Name = "txtRemovePrefixes";
             this.txtRemovePrefixes.Size = new System.Drawing.Size(293, 20);
-            this.txtRemovePrefixes.TabIndex = 14;
+            this.txtRemovePrefixes.TabIndex = 7;
             this.txtRemovePrefixes.Text = "txt;lbl;btn;cbo;grp;chk;prg;rdo;grd;lst;edt";
             // 
             // lblRemovePrefixes
@@ -171,7 +171,7 @@
             this.lblRemovePrefixes.Location = new System.Drawing.Point(13, 107);
             this.lblRemovePrefixes.Name = "lblRemovePrefixes";
             this.lblRemovePrefixes.Size = new System.Drawing.Size(89, 13);
-            this.lblRemovePrefixes.TabIndex = 15;
+            this.lblRemovePrefixes.TabIndex = 6;
             this.lblRemovePrefixes.Text = "Remove prefixes:";
             // 
             // OptionsForm
